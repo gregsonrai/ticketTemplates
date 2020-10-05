@@ -1,0 +1,33 @@
+# title of ticket template is required
+title: "JIT Provisioning Template"
+
+# The next fields are optional:
+description: "Description of the template"
+version: "0.0.1"
+authorName: "Greg"
+authorEmail: "greg.davis@sonraisecurity.com"
+
+# one or more fields must be specified
+fields:
+  - name: "one user"
+    required: true 
+    type: "select"
+    select:
+      search: "{ Users { items { srn name } } }"
+      path: ["data", "Users", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn"]
+
+  - name: "many users"
+    required: true 
+    multi: true
+    type: "select"
+    select:
+      search: "{ Users { items { srn name } } }"
+      path: ["data", "Users", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn"]
+
+  - name: "text field"
+    required: false
+    type: "text"
