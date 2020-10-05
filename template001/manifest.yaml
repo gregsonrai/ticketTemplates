@@ -23,7 +23,7 @@ fields:
     type: "select"
     select:
       search: "{ Roles { items { srn name resourceId } } }"
-      path: ["data", "Users", "items"]
+      path: ["data", "Roles", "items"]
       valueField: "srn"
       labelFields: ["name", "srn", "resourceId"]
 
