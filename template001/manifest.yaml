@@ -15,7 +15,7 @@ fields:
     select:
       search: "{ Users { items { srn name resourceId } } }"
       path: ["data", "Users", "items"]
-      valueField: "srn"
+      valueField: "resourceId"
       labelFields: ["name", "srn", "resourceId"]
 
   - name: "Role select"
@@ -24,7 +24,7 @@ fields:
     select:
       search: "{ Roles { items { srn name resourceId } } }"
       path: ["data", "Roles", "items"]
-      valueField: "srn"
+      valueField: "resourceId"
       labelFields: ["name", "srn", "resourceId"]
 
   - name: "Valid until"
