@@ -3,31 +3,30 @@ title: "JIT Provisioning Template"
 
 # The next fields are optional:
 description: "Description of the template"
-version: "0.0.1"
+version: "0.0.2"
 authorName: "Greg"
 authorEmail: "greg.davis@sonraisecurity.com"
 
 # one or more fields must be specified
 fields:
-  - name: "one user"
+  - name: "User select"
     required: true 
     type: "select"
     select:
-      search: "{ Users { items { srn name } } }"
+      search: "{ Users { items { srn name resourceId } } }"
       path: ["data", "Users", "items"]
       valueField: "srn"
-      labelFields: ["name", "srn"]
+      labelFields: ["name", "srn", "resourceId"]
 
-  - name: "many users"
+  - name: "Role select"
     required: true 
-    multi: true
     type: "select"
     select:
-      search: "{ Users { items { srn name } } }"
+      search: "{ Roles { items { srn name resourceId } } }"
       path: ["data", "Users", "items"]
       valueField: "srn"
-      labelFields: ["name", "srn"]
+      labelFields: ["name", "srn", "resourceId"]
 
-  - name: "text field"
+  - name: "Valid until"
     required: false
-    type: "text"
+    type: "date"
