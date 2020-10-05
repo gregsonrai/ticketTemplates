@@ -13,7 +13,7 @@ fields:
     required: true 
     type: "select"
     select:
-      search: "{ Users { items (limit: 1000) { srn name resourceId } } }"
+      search: "{ Users (where: { cloudType: { op:EQ value:\"aws\" } } ) { items (limit: 1000) { srn name resourceId } } }"
       path: ["data", "Users", "items"]
       valueField: "resourceId"
       labelFields: ["name", "srn", "resourceId"]
