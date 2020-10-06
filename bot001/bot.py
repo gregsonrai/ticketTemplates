@@ -9,7 +9,23 @@ def run(ctx):
     logging.info('Title is {}', ticket.get('title'))
     logging.info('account is {}', ticket.get('account'))
 
-    user_srn = ctx.User_select
+    customFields = ticket.get('customFields')
+    user_srn = None
+    tag_key = None
+    tag_value = None
+
+    for customField in ticket.get('customFields'):
+        name = customField['name']
+        value = customField['value']
+
+        if name == 'User select':
+            user_srn = value
+        elif name == 'TagKey':
+            tag_key = value
+        elif name == 'TagValue':
+            tag_value = value
+
+    #user_srn = ctx.User_select
     pattern = 'srn:aws:iam::(\d+).*/(.*)$'
     a = re.search(pattern, string_one)
 
@@ -23,8 +39,8 @@ def run(ctx):
     logging.info('Will try to run with account {} and username {}'.format(account_id, user_name))
     iam_client = ctx.get_client(account_id).get('iam')
 
-    tag_key = ctx.TagKey
-    tag_value = ctx.TagValue
+    #tag_key = ctx.TagKey
+    #tag_value = ctx.TagValue
 
     logging.info('Tagging user {} with {} : {}'.format(user_name, tag_key, tag_value))
     iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
