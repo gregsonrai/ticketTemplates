@@ -37,7 +37,7 @@ def run(ctx):
     user_name = a.group(2)
 
     logging.info('Will try to run with account {} and username {}'.format(account_id, user_name))
-    iam_client = ctx.get_client(account_id).get('iam')
+    iam_client = ctx.get_client(account_id = account_id).get('iam')
 
     #tag_key = ctx.TagKey
     #tag_value = ctx.TagValue
