@@ -5,6 +5,10 @@ import sonrai.platform.aws.arn
 
 def run(ctx):
     # Create AWS identity and access management client
+    ticket = ctx.config.get('data').get('ticket')
+    logging.info('Title is {}', ticket.get('title'))
+    logging.info('account is {}', ticket.get('account'))
+
     user_srn = ctx.User_select
     pattern = 'srn:aws:iam::(\d+).*/(.*)$'
     a = re.search(pattern, string_one)
