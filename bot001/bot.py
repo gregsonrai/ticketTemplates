@@ -13,10 +13,10 @@ def run(ctx):
         logging.error('Could not parse AWS SRN {}'.format(user_srn))
         sys.exit()
 
-
     account_id = a.group(1)
     user_name = a.group(2)
 
+    logging.info('Will try to run with account {} and username {}'.format(account_id, user_name))
     iam_client = ctx.get_client(account_id).get('iam')
 
     tag_key = ctx.TagKey
