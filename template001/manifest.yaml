@@ -3,7 +3,7 @@ title: "JIT Tagging Template"
 
 # The next fields are optional:
 description: "This templates allows you to specify a tag to be applied to a user"
-version: "0.0.4"
+version: "0.0.5"
 authorName: "Greg"
 authorEmail: "greg.davis@sonraisecurity.com"
 
@@ -15,7 +15,7 @@ fields:
     select:
       search: "{ Users { items (limit: 5000) { srn name resourceId } } }"
       path: ["data", "Users", "items"]
-      valueField: "resourceId"
+      valueField: "name"
       labelFields: ["name", "srn", "resourceId"]
 
   - name: "TagKey"
