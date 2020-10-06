@@ -27,7 +27,7 @@ def run(ctx):
 
     #user_srn = ctx.User_select
     pattern = 'srn:aws:iam::(\d+).*/(.*)$'
-    a = re.search(pattern, string_one)
+    a = re.search(pattern, user_srn)
 
     if a is None:
         logging.error('Could not parse AWS SRN {}'.format(user_srn))
