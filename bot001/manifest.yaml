@@ -1,0 +1,7 @@
+version: 2020-10-06
+type: Remediation
+title: Tag Resoruce
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com

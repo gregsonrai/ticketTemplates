@@ -1,9 +1,9 @@
 # title of ticket template is required
-title: "JIT Provisioning Template"
+title: "JIT Tagging Template"
 
 # The next fields are optional:
-description: "Description of the template"
-version: "0.0.3"
+description: "This templates allows you to specify a tag to be applied to a user"
+version: "0.0.4"
 authorName: "Greg"
 authorEmail: "greg.davis@sonraisecurity.com"
 
@@ -18,15 +18,10 @@ fields:
       valueField: "resourceId"
       labelFields: ["name", "srn", "resourceId"]
 
-  - name: "Role select"
-    required: true 
-    type: "select"
-    select:
-      search: "{ Roles { items { srn name resourceId } } }"
-      path: ["data", "Roles", "items"]
-      valueField: "resourceId"
-      labelFields: ["name", "srn", "resourceId"]
+  - name: "TagKey"
+    required: true
+    type: "text"
 
-  - name: "Valid until"
-    required: false
+  - name: "TagValue"
+    required: true
     type: "text"
