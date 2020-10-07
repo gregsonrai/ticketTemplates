@@ -1,0 +1,7 @@
+version: 2020-10-07
+type: Remediation
+title: UnTag Resoruce
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
