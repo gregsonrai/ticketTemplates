@@ -4,16 +4,16 @@ import logging
 import sonrai.platform.aws.arn
 
 def run(ctx):
-    # Create AWS identity and access management client
+    # Get the ticket data from the context
     ticket = ctx.config.get('data').get('ticket')
-    logging.info('Title is {}', ticket.get('title'))
-    logging.info('account is {}', ticket.get('account'))
 
+    # Get the list of custom fields from the ticket
     customFields = ticket.get('customFields')
     user_srn = None
     tag_key = None
     tag_value = None
 
+    # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
         name = customField['name']
         value = customField['value']
@@ -25,7 +25,9 @@ def run(ctx):
         elif name == 'TagValue':
             tag_value = value
 
-    #user_srn = ctx.User_select
+    # Read the account and username out of the user srn
+    # Note:  Account here is used by the frameworks to know which collector
+    #        needs to run the bot
     pattern = 'srn:aws:iam::(\d+).*/(.*)$'
     a = re.search(pattern, user_srn)
 
@@ -36,11 +38,9 @@ def run(ctx):
     account_id = a.group(1)
     user_name = a.group(2)
 
-    logging.info('Will try to run with account {} and username {}'.format(account_id, user_name))
+    # Get the AWS IAM client from our frameworks
     iam_client = ctx.get_client(account_id = account_id).get('iam')
 
-    #tag_key = ctx.TagKey
-    #tag_value = ctx.TagValue
-
+    # Call the AWS tag_user API to tag the user
     logging.info('Tagging user {} with {} : {}'.format(user_name, tag_key, tag_value))
     iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
