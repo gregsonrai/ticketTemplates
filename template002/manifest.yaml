@@ -1,0 +1,29 @@
+# title of ticket template is required
+title: "JIT Azure Group Member Adder"
+
+# The next fields are optional:
+description: "This templates allows you to specify a group to add a user into"
+version: "0.0.1"
+authorName: "Greg"
+authorEmail: "greg.davis@sonraisecurity.com"
+
+# one or more fields must be specified
+fields:
+  - name: "User select"
+    required: true 
+    type: "select"
+    select:
+            search: "{ Users (where: {type: {op: EQ, value: ActiveDirectoryUser}}) { items (limit: 5000) { srn name } } }"
+      path: ["data", "Users", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn"]
+
+  - name: "Group select"
+    required: true 
+    type: "select"
+    select:
+            search: "{ Groups (where: { type: { op:EQ, value: ActiveDirectoryGroup }}) { items { srn name } } }"
+      path: ["data", "Groups", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn"]
+
