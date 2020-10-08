@@ -1,7 +1,11 @@
 import re
 import sys
 import logging
-import sonrai.platform.aws.arn
+from azure.graphrbac import GraphRbacManagementClient
+from azure.graphrbac.models import GraphErrorException
+
+from sonrai.platform.azure.client import ManagedIdentityClient
+
 
 def run(ctx):
     # Create Azure identity and access management client
