@@ -13,7 +13,7 @@ fields:
     required: true 
     type: "select"
     select:
-            search: "{ Users (where: {type: {op: EQ, value: ActiveDirectoryUser}}) { items (limit: 5000) { srn name } } }"
+      search: "{ Users (where: {type: {op: EQ, value: ActiveDirectoryUser}}) { items (limit: 5000) { srn name } } }"
       path: ["data", "Users", "items"]
       valueField: "srn"
       labelFields: ["name", "srn"]
@@ -22,7 +22,7 @@ fields:
     required: true 
     type: "select"
     select:
-            search: "{ Groups (where: { type: { op:EQ, value: ActiveDirectoryGroup }}) { items { srn name } } }"
+      search: "{ Groups (where: { type: { op:EQ, value: ActiveDirectoryGroup }}) { items { srn name } } }"
       path: ["data", "Groups", "items"]
       valueField: "srn"
       labelFields: ["name", "srn"]
