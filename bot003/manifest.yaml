@@ -1,6 +1,6 @@
 version: 2020-10-07
 type: Remediation
-title: Azure add user to group
+title: Azure Add User to Group
 cloud: Azure
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security

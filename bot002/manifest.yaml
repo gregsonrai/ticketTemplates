@@ -1,6 +1,6 @@
 version: 2020-10-07
 type: Remediation
-title: UnTag Resoruce
+title: AWS Untag Resource
 cloud: AWS
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security

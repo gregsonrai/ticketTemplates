@@ -1,6 +1,6 @@
 version: 2020-10-07
 type: Remediation
-title: Tag Resoruce
+title: AWS Tag Resource
 cloud: AWS
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security
