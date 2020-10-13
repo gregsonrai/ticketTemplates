@@ -1,0 +1,28 @@
+# title of ticket template is required
+title: "JIT: AWS Policy Selector"
+
+# The next fields are optional:
+description: "This templates allows you to specify an AWS user and a policy for that user"
+version: "0.0.1"
+authorName: "Sonrai Security"
+authorEmail: "info@sonraisecurity.com"
+
+# one or more fields must be specified
+fields:
+  - name: "User select"
+    required: true 
+    type: "select"
+    select:
+      search: "{ Users (where: {and: [{and: [{active: {op: EQ, value: true}}, {type: {op: EQ, value: User}}]}, {}, {}]}) { items { srn name } } }"
+      path: ["data", "Users", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn"]
+
+  - name: "Policy select"
+    required: true
+    type: "select"
+    select:
+      search: "{ Policies (where: {and: [{and: [{active: {op: EQ, value: true}}, {type: {op: EQ, value: ManagedPolicy}}]}, {}, {}]}) { items { resourceId name } } }"
+      path: ["data", "Policies", "items"]
+      valueField: "resourceId"
+      labelFields: ["name", "resourceId"]

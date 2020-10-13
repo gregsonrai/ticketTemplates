@@ -10,8 +10,7 @@ def run(ctx):
     # Get the list of custom fields from the ticket
     customFields = ticket.get('customFields')
     user_srn = None
-    tag_key = None
-    tag_value = None
+    policy_arn = None
 
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
@@ -20,10 +19,8 @@ def run(ctx):
 
         if name == 'User select':
             user_srn = value
-        elif name == 'TagKey':
-            tag_key = value
-        elif name == 'TagValue':
-            tag_value = value
+        elif name == 'Policy select':
+            policy_arn = value
 
     # Read the account and username out of the user srn
     # Note:  Account here is used by the frameworks to know which collector
@@ -41,15 +38,7 @@ def run(ctx):
     # Get the AWS IAM client from our frameworks
     iam_client = ctx.get_client(account_id = account_id).get('iam')
 
-    # Call the AWS tag_user API to tag the user
-    logging.info('Tagging user {} with {} : {}'.format(user_name, tag_key, tag_value))
-    iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
+    # Call the AWS detach_user_policy API to detach the policy from the user
+    logging.info('Detaching policy {} from user {}'.format(policy_arn, user_name))
+    iam_client.detach_user_policy(UserName=user_name, PolicyArn=policy_arn)
 
-    # Now that we are successful, create a ticket for followup
-    # response = ctx.graphql_client().query('''
-    #   query MyData {
-    #   }
-    #  ''')
-    # response.MyData ...
-
-    query = "mutation

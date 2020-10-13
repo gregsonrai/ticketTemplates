@@ -1,11 +1,11 @@
 # title of ticket template is required
-title: "JIT Tagging Template"
+title: "JIT: AWS User Tagging Selector"
 
 # The next fields are optional:
 description: "This templates allows you to specify a tag to be applied to a user"
 version: "0.0.6"
-authorName: "Greg"
-authorEmail: "greg.davis@sonraisecurity.com"
+authorName: "Sonrai Security"
+authorEmail: "info@sonraisecurity.com"
 
 # one or more fields must be specified
 fields:

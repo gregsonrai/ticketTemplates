@@ -1,0 +1,7 @@
+version: 2020-10-13
+type: Remediation
+title: AWS Detach Policy
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
