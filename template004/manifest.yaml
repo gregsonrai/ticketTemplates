@@ -3,7 +3,7 @@ title: "JIT: AWS Role Selector"
 
 # The next fields are optional:
 description: "This templates allows you to specify an AWS user and a role for that user"
-version: "0.0.1"
+version: "0.0.2"
 authorName: "Sonrai Security"
 authorEmail: "info@sonraisecurity.com"
 
@@ -18,7 +18,7 @@ fields:
       valueField: "srn"
       labelFields: ["name", "srn"]
 
-  - name: "Policy select"
+  - name: "Role select"
     required: true
     type: "select"
     select:
