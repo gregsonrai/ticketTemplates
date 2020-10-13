@@ -52,4 +52,4 @@ def run(ctx):
     #  ''')
     # response.MyData ...
 
-    query = "mutation
+    #query = "mutation
