@@ -53,24 +53,24 @@ def run(ctx):
 
     query = "mutation TagBotCreateReversalQuery { "
     query = query + "CreateTicket(input: { "
-    query = query + "title: " + "Revert: " + ticket.get("title") + ", "
-    query = query + "description: " + ticket.get("description") + ", "
+    query = query + "title: " + "\"Revert: " + ticket.get("title") + "\", "
+    query = query + "description: \"" + ticket.get("description") + "\", "
     query = query + "severityCategory: " + ticket.get("severityCategory") + ", "
-    query = query + "account: " + ticket.get("account") + ", "
+    query = query + "account: \"" + ticket.get("account") + "\", "
 #
 #    query = query + "swimlaneSRNs: [ "
 #    for swimlaneSRN in ticket.get("swimlaneSRNs"):
 #        query = query + swimlaneSRN + ", "
 
-    query = query + "srn:arglebargle:foofaraw ], "
+    query = query + "\"srn:arglebargle:foofaraw\" ], "
 
 #    query = query + "templateSRN: " + ticket.get("templateSRN") + ","
     query = query + "customFields: [ "
 
     for customField in ticket.get('customFields'):
-        query = query + customField['name'] + ": " + customField['value'] + ", "
+        query = query + "\"" + customField['name'] + "\": \"" + customField['value'] + "\", "
 
-    query = query + "arglebargle: \"foofaraw\" ] "
+    query = query + "\"arglebargle\": \"foofaraw\" ] "
     query = query + "}) "
     query = query + "{ srn } }"
 
