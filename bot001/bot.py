@@ -8,7 +8,6 @@ def run(ctx):
     ticket = ctx.config.get('data').get('ticket')
 
     # Get the list of custom fields from the ticket
-    customFields = ticket.get('customFields')
     user_srn = None
     tag_key = None
     tag_value = None
@@ -58,10 +57,10 @@ def run(ctx):
     query = query + "description: " + ticket.get("description") + ", "
     query = query + "severityCategory: " + ticket.get("severityCategory") + ", "
     query = query + "account: " + ticket.get("account") + ", "
-
-    query = query + "swimlaneSRNs: [ "
-    for swimlaneSRN in ticket.get("swimlaneSRNs"):
-        query = query + swimlaneSRN + ", "
+#
+#    query = query + "swimlaneSRNs: [ "
+#    for swimlaneSRN in ticket.get("swimlaneSRNs"):
+#        query = query + swimlaneSRN + ", "
 
     query = query + "srn:arglebargle:foofaraw ] "
 
