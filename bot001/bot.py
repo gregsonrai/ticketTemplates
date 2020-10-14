@@ -60,7 +60,7 @@ def run(ctx):
     query = query + "account: " + ticket.get("account") + ", "
 
     query = query + "swimlaneSRNs: [ "
-    for swimlaneSRN in ticket.get("swimlaneSRNs")
+    for swimlaneSRN in ticket.get("swimlaneSRNs"):
         query = query + swimlaneSRN + ", "
 
     query = query + "srn:arglebargle:foofaraw ] "
