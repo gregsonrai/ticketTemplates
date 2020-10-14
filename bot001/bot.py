@@ -67,11 +67,22 @@ def run(ctx):
 #    query = query + "templateSRN: " + ticket.get("templateSRN") + ","
     query = query + "customFields: [ "
 
+    first = 'true'
     for customField in ticket.get('customFields'):
-        query = query + "\"" + customField['name'] + "\": \"" + customField['value'] + "\", "
+        # Fixes needed here = not just name : value - name: "name" and all the others
+        if first == 'true':
+            first = 'false'
+        else:
+            query = query + ", "
 
-    query = query + "\"arglebargle\": \"foofaraw\" ] "
-    query = query + "}) "
+
+        query = query + "{ name: \"" + customField['name'] + "\", "
+        query = query + "value: \"" + customField['value'] + "\", "
+        query = query + "type:" + customField['type'] + ", "
+        query = query + "isMulti:" + customField['isMulti'] + ", "
+        query = query + "isRequired:" + customField['isRequired'] + "}"
+
+    query = query + "]}) "
     query = query + "{ srn } }"
 
     response = ctx.graphql_client().query(query)
