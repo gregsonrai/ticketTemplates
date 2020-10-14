@@ -58,7 +58,8 @@ def run(ctx):
     query = query + "description: " + ticket.get("description") + ", "
     query = query + "severityCategory: " + ticket.get("severityCategory") + ", "
     query = query + "account: " + ticket.get("account") + ", "
-    query = query + "swimlaneSRNs: " + ticket.get("siwmlaneSRNs") + ", "
+
+    query = query + "swimlaneSRNs: " + ticket.get("swimlaneSRNs") + ", "
     query = query + "templateSRN: " + ticket.get("templateSRN") + ","
     query = query + "customFields: [ "
 
