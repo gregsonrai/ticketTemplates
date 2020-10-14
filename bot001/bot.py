@@ -52,4 +52,25 @@ def run(ctx):
     #  ''')
     # response.MyData ...
 
-    #query = "mutation
+    query = "mutation TagBotCreateReversalQuery { "
+    query = query + "CreateTicket(input: { "
+    query = query + "title: " + "Revert: " ticket.get("title") + ", "
+    query = query + "description: " + ticket.get("description") + ", "
+    query = query + "severityCategory: " + ticket.get("severityCategory") + ", "
+    query = query + "account: " + ticket.get("account") + ", "
+    query = query + "swimlaneSRNs: " + ticket.get("siwmlaneSRNs") + ", "
+    query = query + "templateSRN: " + ticket.get("templateSRN") + ","
+    query = query + "customFields: [ "
+
+    for customField in ticket.get('customFields'):
+        query = query + customField['name'] + ": " + customField['value'] + ", "
+
+    query = query + "arglebargle: \"foofaraw\" ] "
+    query = query + "}) "
+    query = query + "{ srn } }"
+
+    response = ctx.graphql_client().query(query)
+    ticketSrn = response.TagBotCreateReversalQuery.items.srn
+
+    logging.info('Wowzahs - I created {}'.format(ticketSrn))
+
