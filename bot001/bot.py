@@ -81,8 +81,8 @@ def run(ctx):
         query = query + "type:" + customField['type'] + ", "
 
         if 'isMulti' in customField:
-            query = query + "isMulti:" + customField['isMulti'] + ", "
-        query = query + "isRequired:" + customField['isRequired'] + "}"
+            query = query + "isMulti:" + str(customField['isMulti']).lower() + ", "
+        query = query + "isRequired:" + str(customField['isRequired']).lower() + "}"
 
     query = query + "]}) "
     query = query + "{ srn } }"
