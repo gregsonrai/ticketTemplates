@@ -100,7 +100,7 @@ def run(ctx):
 
 
     current_time = datetime.datetime.now()
-    time_delta = timedelta(hours = duration)
+    time_delta = timedelta(hours = int(duration))
     current_time = current_time + time_delta
     snoozedUntil = current_time.strftime("%Y-%m-%d %H:%M:%S")
 
