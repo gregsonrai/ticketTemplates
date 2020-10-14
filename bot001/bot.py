@@ -54,7 +54,7 @@ def run(ctx):
 
     query = "mutation TagBotCreateReversalQuery { "
     query = query + "CreateTicket(input: { "
-    query = query + "title: " + "Revert: " ticket.get("title") + ", "
+    query = query + "title: " + "Revert: " + ticket.get("title") + ", "
     query = query + "description: " + ticket.get("description") + ", "
     query = query + "severityCategory: " + ticket.get("severityCategory") + ", "
     query = query + "account: " + ticket.get("account") + ", "
