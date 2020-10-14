@@ -89,7 +89,7 @@ def run(ctx):
     query = query + "{ srn } }"
 
     response = ctx.graphql_client().query(query)
-    ticketSrn = response.TagBotCreateReversalQuery.items.srn
+    ticketSrn = response.CreateTicket.srn
 
     logging.info('Wowzahs - I created {}'.format(ticketSrn))
 
