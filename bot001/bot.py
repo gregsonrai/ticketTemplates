@@ -89,7 +89,11 @@ def run(ctx):
     query = query + "{ srn } }"
 
     response = ctx.graphql_client().query(query)
-    ticketSrn = response.data.CreateTicket.srn
 
-    logging.info('Wowzahs - I created {}'.format(ticketSrn))
+    # Exploring time
+    for k, v in response.items()
+        logging.info('Key: {}  Value:  {}'.format(k, v)) 
+    #ticketSrn = response.data.CreateTicket.srn
+
+    #logging.info('Wowzahs - I created {}'.format(ticketSrn))
 
