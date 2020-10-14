@@ -25,3 +25,7 @@ fields:
   - name: "TagValue"
     required: true
     type: "text"
+
+  - name: "Duration hours"
+    required: false
+    type: "text"

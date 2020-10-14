@@ -2,6 +2,8 @@ import re
 import sys
 import logging
 import sonrai.platform.aws.arn
+import datetime
+from datetime import timedelta
 
 def run(ctx):
     # Get the ticket data from the context
@@ -12,6 +14,7 @@ def run(ctx):
     user_srn = None
     tag_key = None
     tag_value = None
+    duration = None
 
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
@@ -24,6 +27,8 @@ def run(ctx):
             tag_key = value
         elif name == 'TagValue':
             tag_value = value
+        elif name == 'Duration hours':
+            duration = value
 
     # Read the account and username out of the user srn
     # Note:  Account here is used by the frameworks to know which collector
@@ -45,30 +50,21 @@ def run(ctx):
     logging.info('Tagging user {} with {} : {}'.format(user_name, tag_key, tag_value))
     iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
 
-    # Now that we are successful, create a ticket for followup
-    # response = ctx.graphql_client().query('''
-    #   query MyData {
-    #   }
-    #  ''')
-    # response.MyData ...
+    # If there is a duration, we need to create a followup ticket to revert the change
+    # If there is not, we are done here
+    if duration is None:
+        return
 
+    # Now that we are successful, create a ticket for followup
     query = "mutation TagBotCreateReversalQuery { "
     query = query + "CreateTicket(input: { "
-    query = query + "title: " + "\"Revert: " + ticket.get("title") + "\", "
+    query = query + "title: " + "\"FOLLOWUP:  Revert " + ticket.get("title") + "\", "
     query = query + "description: \"" + ticket.get("description") + "\", "
-#    query = query + "severityCategory: " + ticket.get("severityCategory").name + ", "
+    #    query = query + "severityCategory: " + ticket.get("severityCategory").name + ", "
     query = query + "severityCategory: \"MEDIUM\", "
     query = query + "account: \"" + ticket.get("account") + "\", "
-#
-#    query = query + "swimlaneSRNs: [ "
-#    for swimlaneSRN in ticket.get("swimlaneSRNs"):
-#        query = query + swimlaneSRN + ", "
 
-#    query = query + "\"srn:arglebargle:foofaraw\" ], "
-
-#    query = query + "templateSRN: " + ticket.get("templateSRN") + ","
     query = query + "customFields: [ "
-
     first = 'true'
     for customField in ticket.get('customFields'):
         # Fixes needed here = not just name : value - name: "name" and all the others
@@ -91,9 +87,25 @@ def run(ctx):
 
     response = ctx.graphql_client().query(query)
 
-    # Exploring time
-    logging.info('Response: {}'.format(response)) 
     ticketSrn = response.get('CreateTicket').get('srn')
+    logging.info('Created ticket {} for remediation'.format(ticketSrn))
 
-    logging.info('Wowzahs - I created {}'.format(ticketSrn))
+
+    current_time = datetime.datetime.now()
+    time_delta = timedelta(hours = duration)
+    current_time = current_time + time_delta
+    snoozedUntil = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    query = '''
+        mutation snoozeTicket($srn: String, $snoozedUntil: DateTime) {
+            SnoozeTickets(snoozedUntil: $snoozedUntil, input: {srns: [$srn]}) {
+                successCount
+                failureCount
+            }
+        }
+    '''
+    variables = { "srn": ticketSrn, "snoozedUntil": snoozedUntil }
+
+    response = ctx.graphql_client().query(query, variables)
+    log.info("Finally, response was {}".format(response))
 
