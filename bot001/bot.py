@@ -55,7 +55,8 @@ def run(ctx):
     query = query + "CreateTicket(input: { "
     query = query + "title: " + "\"Revert: " + ticket.get("title") + "\", "
     query = query + "description: \"" + ticket.get("description") + "\", "
-    query = query + "severityCategory: " + ticket.get("severityCategory").name + ", "
+#    query = query + "severityCategory: " + ticket.get("severityCategory").name + ", "
+    query = query + "severityCategory: \"MEDIUM\", "
     query = query + "account: \"" + ticket.get("account") + "\", "
 #
 #    query = query + "swimlaneSRNs: [ "
