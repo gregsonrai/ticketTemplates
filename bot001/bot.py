@@ -79,7 +79,9 @@ def run(ctx):
         query = query + "{ name: \"" + customField['name'] + "\", "
         query = query + "value: \"" + customField['value'] + "\", "
         query = query + "type:" + customField['type'] + ", "
-        query = query + "isMulti:" + customField['isMulti'] + ", "
+
+        if 'isMulti' in customField:
+            query = query + "isMulti:" + customField['isMulti'] + ", "
         query = query + "isRequired:" + customField['isRequired'] + "}"
 
     query = query + "]}) "
