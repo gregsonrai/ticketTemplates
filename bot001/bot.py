@@ -62,9 +62,9 @@ def run(ctx):
 #    for swimlaneSRN in ticket.get("swimlaneSRNs"):
 #        query = query + swimlaneSRN + ", "
 
-    query = query + "srn:arglebargle:foofaraw ] "
+    query = query + "srn:arglebargle:foofaraw ], "
 
-    query = query + "templateSRN: " + ticket.get("templateSRN") + ","
+#    query = query + "templateSRN: " + ticket.get("templateSRN") + ","
     query = query + "customFields: [ "
 
     for customField in ticket.get('customFields'):
