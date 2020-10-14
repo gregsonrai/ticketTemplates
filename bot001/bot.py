@@ -92,7 +92,7 @@ def run(ctx):
 
     # Exploring time
     logging.info('Response: {}'.format(response)) 
-    #ticketSrn = response.data.CreateTicket.srn
+    ticketSrn = response.get('CreateTicket').get('srn')
 
-    #logging.info('Wowzahs - I created {}'.format(ticketSrn))
+    logging.info('Wowzahs - I created {}'.format(ticketSrn))
 
