@@ -6,6 +6,7 @@ import sonrai.platform.aws.arn
 def run(ctx):
     # Get the ticket data from the context
     ticket = ctx.config.get('data').get('ticket')
+    logging.info('Data looks like: {}'.format(ticket))
 
     # Get the list of custom fields from the ticket
     user_srn = None
