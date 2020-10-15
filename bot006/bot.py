@@ -60,7 +60,8 @@ def run(ctx):
             else:
                 aws.append(user_arn)
 
-    iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=policy_document)
+    logging.info("Updated document looks like {}".format(policy_document))
+    iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=str(policy_document))
     logging.info("Success!  Go check it out!")
     sys.exit()
 
