@@ -45,7 +45,7 @@ def run(ctx):
 
     # Get the role so we can get the assume_role_policy_document
     logging.info('Retrieving role {} in account {}'.format(role_name, account_id))
-    role = iam_client.Role(role_name)
+    role = iam_client.get_role(RoleName = role_name)
 
     policy_document = role.assume_role_policy_document
 
