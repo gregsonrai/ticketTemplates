@@ -47,7 +47,8 @@ def run(ctx):
     logging.info('Retrieving role {} in account {}'.format(role_name, account_id))
     role = iam_client.get_role(RoleName = role_name)
 
-    policy_document = role.assume_role_policy_document
+    logging.info("Role looks like {}".format(role))
+    policy_document = role.get("Role").get("AssumeRolePolicyDocument")
 
     logging.info("Got the role!  Its policy document is {}".format(policy_document))
     sys.exit()
