@@ -50,15 +50,15 @@ def run(ctx):
     policy_document = role.get("Role").get("AssumeRolePolicyDocument")
 
     for statement in policy_document.get("Statement"):
-    if (statement.get("Action") == 'sts:AssumeRole'):
-        principal = statement.get("Principal")
-        aws = principal.get("AWS")
-        if aws is None:
-            principal['AWS'] = user_arn
-        elif isinstance(aws, str):
-            principal['AWS'] = [ user_arn, aws ]
-        else:
-            aws.append(user_arn)
+        if (statement.get("Action") == 'sts:AssumeRole'):
+            principal = statement.get("Principal")
+            aws = principal.get("AWS")
+            if aws is None:
+                principal['AWS'] = user_arn
+            elif isinstance(aws, str):
+                principal['AWS'] = [ user_arn, aws ]
+            else:
+                aws.append(user_arn)
 
     iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=policy_document)
     logging.info("Success!  Go check it out!")
