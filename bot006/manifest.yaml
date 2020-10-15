@@ -1,0 +1,7 @@
+version: 2020-10-09
+type: Remediation
+title: AWS Add User To Role
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
