@@ -48,6 +48,7 @@ def run(ctx):
     role = iam_client.get_role(RoleName = role_name)
 
     policy_document = role.get("Role").get("AssumeRolePolicyDocument")
+    logging.info("Before document looks like {}".format(policy_document))
 
     for statement in policy_document.get("Statement"):
         if (statement.get("Action") == 'sts:AssumeRole'):
