@@ -13,10 +13,10 @@ fields:
     required: true 
     type: "select"
     select:
-      search: "{ Users (where: {and: [{and: [{active: {op: EQ, value: true}}, {type: {op: EQ, value: User}}]}, {}, {}]}) { items { srn name } } }"
+      search: "{ Users (where: {and: [{and: [{active: {op: EQ, value: true}}, {type: {op: EQ, value: User}}]}, {}, {}]}) { items { resourceId name } } }"
       path: ["data", "Users", "items"]
-      valueField: "srn"
-      labelFields: ["name", "srn"]
+      valueField: "resourceId"
+      labelFields: ["name", "resourceId"]
 
   - name: "Role select"
     required: true

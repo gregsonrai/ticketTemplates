@@ -11,7 +11,7 @@ def run(ctx):
     logging.info('Data looks like: {}'.format(ticket))
 
     # Get the list of custom fields from the ticket
-    user_srn = None
+    user_arn = None
     role_srn = None
     duration = None
 
@@ -21,7 +21,7 @@ def run(ctx):
         value = customField['value']
 
         if name == 'User select':
-            user_srn = value
+            user_arn = value
         elif name == 'Role select':
             role_srn = value
         elif name == 'Duration hours':
@@ -47,10 +47,21 @@ def run(ctx):
     logging.info('Retrieving role {} in account {}'.format(role_name, account_id))
     role = iam_client.get_role(RoleName = role_name)
 
-    logging.info("Role looks like {}".format(role))
     policy_document = role.get("Role").get("AssumeRolePolicyDocument")
 
-    logging.info("Got the role!  Its policy document is {}".format(policy_document))
+    for statement in policy_document.get("Statement"):
+    if (statement.get("Action") == 'sts:AssumeRole'):
+        principal = statement.get("Principal")
+        aws = principal.get("AWS")
+        if aws is None:
+            principal['AWS'] = user_arn
+        elif isinstance(aws, str):
+            principal['AWS'] = [ user_arn, aws ]
+        else:
+            aws.append(user_arn)
+
+    iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=policy_document)
+    logging.info("Success!  Go check it out!")
     sys.exit()
 
     # If there is a duration, we need to create a followup ticket to revert the change
