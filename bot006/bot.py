@@ -2,6 +2,7 @@ import re
 import sys
 import logging
 import sonrai.platform.aws.arn
+import json
 import datetime
 from datetime import timedelta
 
@@ -52,13 +53,13 @@ def run(ctx):
 
 #    newStatement = {'Effect': 'Allow', 'Principal': {'AWS': user_arn}, 'Action': 'sts:AssumeRole'}
     for statement in policy_document.get("Statement"):
-        if (statement.get("Action") == 'sts:AssumeRole'):
+        if (statement.get("Action") == "sts:AssumeRole"):
             principal = statement.get("Principal")
             aws = principal.get("AWS")
             if aws is None:
-                principal['AWS'] = user_arn
+                principal["AWS"] = user_arn
             elif isinstance(aws, str):
-                principal['AWS'] = [ user_arn, aws ]
+                principal["AWS"] = [ user_arn, aws ]
             else:
                 aws.append(user_arn)
 
@@ -66,7 +67,7 @@ def run(ctx):
 
 #    policy_document.get("Statement").append(newStatement)
     logging.info("Updated document looks like {}".format(policy_document))
-    iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=str(policy_document))
+    iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=json.dumps(policy_document))
     logging.info("Success!  Go check it out!")
     sys.exit()
 
