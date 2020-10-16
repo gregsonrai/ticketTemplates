@@ -50,7 +50,7 @@ def run(ctx):
     policy_document = role.get("Role").get("AssumeRolePolicyDocument")
     logging.info("Before document looks like {}".format(policy_document))
 
-    newStatement = {'Effect': 'Allow', 'Principal': {'AWS': newrole}, 'Action': 'sts:AssumeRole'}
+    newStatement = {'Effect': 'Allow', 'Principal': {'AWS': user_arn}, 'Action': 'sts:AssumeRole'}
 #    for statement in policy_document.get("Statement"):
 #        if (statement.get("Action") == 'sts:AssumeRole'):
 #            principal = statement.get("Principal")
