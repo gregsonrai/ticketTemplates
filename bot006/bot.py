@@ -9,7 +9,6 @@ from datetime import timedelta
 def run(ctx):
     # Get the ticket data from the context
     ticket = ctx.config.get('data').get('ticket')
-    logging.info('Data looks like: {}'.format(ticket))
 
     # Get the list of custom fields from the ticket
     user_arn = None
@@ -45,13 +44,10 @@ def run(ctx):
     iam_client = ctx.get_client(account_id = account_id).get('iam')
 
     # Get the role so we can get the assume_role_policy_document
-    logging.info('Retrieving role {} in account {}'.format(role_name, account_id))
     role = iam_client.get_role(RoleName = role_name)
-
     policy_document = role.get("Role").get("AssumeRolePolicyDocument")
-    logging.info("Before document looks like {}".format(policy_document))
 
-#    newStatement = {'Effect': 'Allow', 'Principal': {'AWS': user_arn}, 'Action': 'sts:AssumeRole'}
+    # Add the new user to the trust relationship
     for statement in policy_document.get("Statement"):
         if (statement.get("Action") == "sts:AssumeRole"):
             principal = statement.get("Principal")
@@ -65,11 +61,8 @@ def run(ctx):
 
         break
 
-#    policy_document.get("Statement").append(newStatement)
-    logging.info("Updated document looks like {}".format(policy_document))
     iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=json.dumps(policy_document))
-    logging.info("Success!  Go check it out!")
-    sys.exit()
+    logging.info("Successfully updated {} AssumeRolePolicyDocument".format(role_name))
 
     # If there is a duration, we need to create a followup ticket to revert the change
     # If there is not, we are done here
@@ -81,9 +74,11 @@ def run(ctx):
     query = query + "CreateTicket(input: { "
     query = query + "title: " + "\"FOLLOWUP:  Revert " + ticket.get("title") + "\", "
     query = query + "description: \"" + ticket.get("description") + "\", "
-    #    query = query + "severityCategory: " + ticket.get("severityCategory").name + ", "
     query = query + "severityCategory: \"MEDIUM\", "
     query = query + "account: \"" + ticket.get("account") + "\", "
+
+    # Until we get the swimlaneSRNs in the custom ticket passed in, we must tag the global swimlane:
+    query = query + "swimlaneSRNs:[\"srn:" + ticket.get('orgName') + "::Swimlane/Global\"], " 
 
     query = query + "customFields: [ "
     first = 'true'
@@ -117,7 +112,7 @@ def run(ctx):
     response = ctx.graphql_client().query(query)
 
     ticketSrn = response.get('CreateTicket').get('srn')
-    logging.info('Created ticket {} for remediation'.format(ticketSrn))
+    logging.info('Created ticket {} for followup remediation'.format(ticketSrn))
 
 
     current_time = datetime.datetime.now()
@@ -136,5 +131,4 @@ def run(ctx):
     variables = { "srn": ticketSrn, "snoozedUntil": snoozedUntil }
 
     response = ctx.graphql_client().query(query, variables)
-    log.info("Finally, response was {}".format(response))
 
