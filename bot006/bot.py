@@ -73,7 +73,10 @@ def run(ctx):
     query = "mutation TagBotCreateReversalQuery { "
     query = query + "CreateTicket(input: { "
     query = query + "title: " + "\"FOLLOWUP:  Revert " + ticket.get("title") + "\", "
-    query = query + "description: \"" + ticket.get("description") + "\", "
+
+    if ticket.get("description") is not None:
+        query = query + "description: \"" + ticket.get("description") + "\", "
+
     query = query + "severityCategory: \"MEDIUM\", "
     query = query + "account: \"" + ticket.get("account") + "\", "
 
