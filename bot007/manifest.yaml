@@ -1,0 +1,7 @@
+version: 2020-10-11
+type: Remediation
+title: AWS Remove User From Role
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com

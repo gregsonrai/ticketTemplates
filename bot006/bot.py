@@ -134,4 +134,5 @@ def run(ctx):
     variables = { "srn": ticketSrn, "snoozedUntil": snoozedUntil }
 
     response = ctx.graphql_client().query(query, variables)
+    logging.info("Snoozed the followup ticket for {} hours - until {}".format(duration, snoozedUntil))
 
