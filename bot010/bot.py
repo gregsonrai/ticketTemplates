@@ -65,5 +65,4 @@ def modify_policy_remove_member(policy, role, member):
     binding = next(b for b in policy["bindings"] if b["role"] == role)
     if "members" in binding and member in binding["members"]:
         binding["members"].remove(member)
-    print(binding)
     return policy

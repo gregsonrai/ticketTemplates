@@ -139,5 +139,4 @@ def run(ctx):
 def modify_policy_add_member(policy, role, member):
     binding = next(b for b in policy["bindings"] if b["role"] == role)
     binding["members"].append(member)
-    print(binding)
     return policy
