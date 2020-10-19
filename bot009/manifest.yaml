@@ -1,6 +1,6 @@
 version: 2020-10-07
 type: Remediation
-title: GCP Add Owner To Project
+title: GCP Add Editor To Project
 cloud: GCP
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security

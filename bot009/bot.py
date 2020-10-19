@@ -55,7 +55,7 @@ def run(ctx):
 
     logging.info("Policy looks liks {}".format(policy))
 
-    policy = modify_policy_add_member(policy, "roles/owner", user_name)
+    policy = modify_policy_add_member(policy, "roles/editor", user_name)
 
     policy = (
         cloudresourcemanager_v1.projects()
@@ -63,7 +63,7 @@ def run(ctx):
         .execute()
     )
 
-    logging.info("Successfully added {} as an owner to {}".format(user_name, project_id))
+    logging.info("Successfully added {} as an editor to {}".format(user_name, project_id))
 
     # If there is a duration, we need to create a followup ticket to revert the change
     # If there is not, we are done here

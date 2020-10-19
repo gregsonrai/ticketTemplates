@@ -1,5 +1,5 @@
 # title of ticket template is required
-title: "JIT: GCP Project and Owner Selector"
+title: "JIT: GCP Project and User Selector"
 
 # The next fields are optional:
 description: "This templates allows you to specify a GCP project and a user"
