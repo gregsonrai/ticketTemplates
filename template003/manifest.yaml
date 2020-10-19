@@ -26,3 +26,7 @@ fields:
       path: ["data", "Policies", "items"]
       valueField: "resourceId"
       labelFields: ["name", "resourceId"]
+
+  - name: "Duration hours"
+    required: false
+    type: "text"

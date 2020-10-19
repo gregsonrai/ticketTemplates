@@ -27,3 +27,6 @@ fields:
       valueField: "srn"
       labelFields: ["name", "srn"]
 
+  - name: "Duration hours"
+    required: false
+    type: "text"
