@@ -50,6 +50,7 @@ def run(ctx):
     logging.info('Tagging user {} with {} : {}'.format(user_name, tag_key, tag_value))
     iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
 
+
     # If there is a duration, we need to create a followup ticket to revert the change
     # If there is not, we are done here
     if duration is None:
@@ -59,10 +60,15 @@ def run(ctx):
     query = "mutation TagBotCreateReversalQuery { "
     query = query + "CreateTicket(input: { "
     query = query + "title: " + "\"FOLLOWUP:  Revert " + ticket.get("title") + "\", "
-    query = query + "description: \"" + ticket.get("description") + "\", "
-    #    query = query + "severityCategory: " + ticket.get("severityCategory").name + ", "
+
+    if ticket.get("description") is not None:
+        query = query + "description: \"" + ticket.get("description") + "\", "
+
     query = query + "severityCategory: \"MEDIUM\", "
     query = query + "account: \"" + ticket.get("account") + "\", "
+
+    # Until we get the swimlaneSRNs in the custom ticket passed in, we must tag the global swimlane:
+    query = query + "swimlaneSRNs:[\"srn:" + ticket.get('orgName') + "::Swimlane/Global\"], " 
 
     query = query + "customFields: [ "
     first = 'true'
@@ -96,7 +102,7 @@ def run(ctx):
     response = ctx.graphql_client().query(query)
 
     ticketSrn = response.get('CreateTicket').get('srn')
-    logging.info('Created ticket {} for remediation'.format(ticketSrn))
+    logging.info('Created ticket {} for followup remediation'.format(ticketSrn))
 
 
     current_time = datetime.datetime.now()
@@ -115,5 +121,5 @@ def run(ctx):
     variables = { "srn": ticketSrn, "snoozedUntil": snoozedUntil }
 
     response = ctx.graphql_client().query(query, variables)
-    log.info("Finally, response was {}".format(response))
+    logging.info("Snoozed the followup ticket for {} hours - until {}".format(duration, snoozedUntil))
 
