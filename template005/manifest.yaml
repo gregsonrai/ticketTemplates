@@ -1,0 +1,32 @@
+# title of ticket template is required
+title: "JIT: GCP Project and Owner Selector"
+
+# The next fields are optional:
+description: "This templates allows you to specify a GCP project and a user"
+version: "0.0.1"
+authorName: "Sonrai Security"
+authorEmail: "info@sonraisecurity.com"
+
+# one or more fields must be specified
+fields:
+  - name: "User select"
+    required: true 
+    type: "select"
+    select:
+      search: "{ Users (where: {and: [{and: [{type: {op: EQ, value: GCPUser}}]}, {}, {}]}) { items { userName name } } }"
+      path: ["data", "Users", "items"]
+      valueField: "userName"
+      labelFields: ["userName", "name"]
+
+  - name: "Project select"
+    required: true
+    type: "select"
+    select:
+      search: "{ Accounts (where: {and: [{and: [{active: {op: EQ, value: true}}, {type: {op: IN_LIST, values: [GCPProject]}}]}, {}, {}]}) { items { resourceId name } } }"
+      path: ["data", "Accounts", "items"]
+      valueField: "resourceId"
+      labelFields: ["name", "resourceId"]
+
+  - name: "Duration hours"
+    required: false
+    type: "text"
