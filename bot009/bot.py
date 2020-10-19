@@ -25,7 +25,7 @@ def run(ctx):
         value = customField['value']
 
         if name == 'User select':
-            user_name = value
+            user_name = "user:" + value
         elif name == 'Project select':
             project_resource_id = value
         elif name == 'Duration hours':
