@@ -13,8 +13,14 @@ def run(ctx):
     project_resource_id = None
     duration = None
 
+    # GREG Remove debugging
+    logging.info("Ticket looks like {}".format(ticket))
+
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
+        if 'value' not in customField:
+            next
+
         name = customField['name']
         value = customField['value']
 
