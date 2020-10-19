@@ -18,7 +18,7 @@ def run(ctx):
 
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
-        if ! customField.has_key('value'):
+        if 'value' not in customField.keys():
             continue
 
         name = customField['name']
