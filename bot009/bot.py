@@ -13,9 +13,6 @@ def run(ctx):
     project_resource_id = None
     duration = None
 
-    # GREG Remove debugging
-    logging.info("Ticket looks like {}".format(ticket))
-
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
         if 'value' not in customField.keys():
@@ -53,8 +50,6 @@ def run(ctx):
         .execute()
     )
 
-    logging.info("Policy looks liks {}".format(policy))
-
     policy = modify_policy_add_member(policy, "roles/editor", user_name)
 
     policy = (
@@ -87,6 +82,9 @@ def run(ctx):
     query = query + "customFields: [ "
     first = 'true'
     for customField in ticket.get('customFields'):
+        if 'value' not in customField.keys():
+            continue
+
         # Fixes needed here = not just name : value - name: "name" and all the others
         if first == 'true':
             first = 'false'

@@ -20,6 +20,9 @@ def run(ctx):
     # and the group SRN is in "Group select"
     #
     for customField in ticket.get('customFields'):
+        if 'value' not in customField.keys():
+            continue
+
         name = customField['name']
         value = customField['value']
 

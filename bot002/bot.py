@@ -12,6 +12,8 @@ def run(ctx):
     tag_key = None
 
     for customField in ticket.get('customFields'):
+        if 'value' not in customField.keys():
+            continue
         name = customField['name']
         value = customField['value']
 

@@ -21,6 +21,9 @@ def run(ctx):
     # and the group SRN is in "Group select"
     #
     for customField in ticket.get('customFields'):
+        if 'value' not in customField.keys():
+            continue
+
         name = customField['name']
         value = customField['value']
 
@@ -82,6 +85,9 @@ def run(ctx):
     query = query + "customFields: [ "
     first = 'true'
     for customField in ticket.get('customFields'):
+        if 'value' not in customField.keys():
+            continue
+
         # Fixes needed here = not just name : value - name: "name" and all the others
         if first == 'true':
             first = 'false'
