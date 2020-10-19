@@ -32,7 +32,7 @@ def run(ctx):
             duration = value
 
     # Read the project id out of the project's resource ID
-    pattern = '.*project/(.*)$'
+    pattern = '.*projects/(.*)$'
     a = re.search(pattern, project_resource_id)
 
     if a is None:
