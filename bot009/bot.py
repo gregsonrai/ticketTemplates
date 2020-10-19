@@ -58,7 +58,7 @@ def run(ctx):
     policy = modify_policy_add_member(policy, "roles/owner", user_name)
 
     policy = (
-        service.projects()
+        cloudresourcemanager_v1.projects()
         .setIamPolicy(resource=project_id, body={"policy": policy})
         .execute()
     )
