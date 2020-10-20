@@ -11,6 +11,7 @@ def run(ctx):
     logging.info('Data looks like: {}'.format(ticket))
 
     # Get the list of custom fields from the ticket
+    ticket_srn = ticket.get("srn")
     user_srn = None
     tag_key = None
     tag_value = None
@@ -59,73 +60,15 @@ def run(ctx):
     if duration is None:
         return
 
-    # Now that we are successful, create a ticket for followup
-    query = "mutation TagBotCreateReversalQuery { "
-    query = query + "CreateTicket(input: { "
-    query = query + "title: " + "\"FOLLOWUP:  Revert " + ticket.get("title") + "\", "
-
-    if ticket.get("description") is not None:
-        query = query + "description: \"" + ticket.get("description") + "\", "
-
-    query = query + "severityCategory: \"MEDIUM\", "
-    query = query + "account: \"" + ticket.get("account") + "\", "
-
-    # Until we get the swimlaneSRNs in the custom ticket passed in, we must tag the global swimlane:
-    query = query + "swimlaneSRNs:[\"srn:" + ticket.get('orgName') + "::Swimlane/Global\"], " 
-
-    query = query + "customFields: [ "
-    first = 'true'
-    for customField in ticket.get('customFields'):
-        if 'value' not in customField.keys():
-            continue
-
-        # Fixes needed here = not just name : value - name: "name" and all the others
-        if first == 'true':
-            first = 'false'
-        else:
-            query = query + ", "
-
-
-        query = query + "{ name: \"" + customField['name'] + "\", "
-        query = query + "value: \"" + customField['value'] + "\", "
-        query = query + "type:" + customField['type'] + ", "
-
-        if 'isMulti' in customField:
-            query = query + "isMulti:" + str(customField['isMulti']).lower() + ", "
-        else: 
-            query = query + "isMulti:false, "
-
-        if 'isRequired' in customField:
-            query = query + "isRequired:" + str(customField['isRequired']).lower()
-        else:
-            query = query + "isRequired:false"
-
-        query = query + "}"
-
-    query = query + "]}) "
-    query = query + "{ srn } }"
-
-    response = ctx.graphql_client().query(query)
-
-    ticketSrn = response.get('CreateTicket').get('srn')
-    logging.info('Created ticket {} for followup remediation'.format(ticketSrn))
-
-
-    current_time = datetime.datetime.now()
-    time_delta = timedelta(hours = int(duration))
-    current_time = current_time + time_delta
-    snoozedUntil = current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
-
     query = '''
-        mutation snoozeTicket($srn: String, $snoozedUntil: DateTime) {
-            SnoozeTickets(snoozedUntil: $snoozedUntil, input: {srns: [$srn]}) {
-                successCount
-                failureCount
+        mutation reopenTicket($srn: String) {
+            ReopenTickets(input: {srns: [$srn]}) {   
+              successCount
+              failureCount
+              __typename
             }
         }
     '''
-    variables = { "srn": ticketSrn, "snoozedUntil": snoozedUntil }
+    variables = { "srn": ticket_srn }
 
     response = ctx.graphql_client().query(query, variables)
-    logging.info("Snoozed the followup ticket for {} hours - until {}".format(duration, snoozedUntil))
-
