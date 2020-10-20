@@ -59,7 +59,7 @@ def run(ctx):
     iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
 
     # If we were asked to reopen the ticket (to allow escalation schemes to continue functioning), then do that now
-    if reopen_ticket = 'true':
+    if reopen_ticket == 'true':
         query = '''
             mutation reopenTicket($srn: String) {
                 ReopenTickets(input: {srns: [$srn]}) {   

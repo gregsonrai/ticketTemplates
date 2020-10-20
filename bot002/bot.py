@@ -45,7 +45,7 @@ def run(ctx):
     iam_client.untag_user(UserName=user_name, TagKeys=[ tag_key ])
 
     # If we were asked to close the ticket then do that now
-    if close_ticket = 'true':
+    if close_ticket == 'true':
         query = '''
             mutation closeTicket($srn: String) {
               CloseTickets(input: {srns: [$srn]}) {
