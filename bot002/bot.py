@@ -36,3 +36,5 @@ def run(ctx):
 
     logging.info('UnTagging user {} with {}'.format(user_name, tag_key))
     iam_client.untag_user(UserName=user_name, TagKeys=[ tag_key ])
+}
+
