@@ -8,10 +8,11 @@ def run(ctx):
     # Get the ticket data from the context
     ticket = ctx.config.get('data').get('ticket')
 
-    # Get the list of custom fields from the ticket
+    ticket_srn = ticket.get("srn")
+    reopen_ticket = 'false'
+    close_ticket = 'false'
     user_name = None
     project_resource_id = None
-    duration = None
 
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
@@ -27,6 +28,10 @@ def run(ctx):
             project_resource_id = value
         elif name == 'Duration hours':
             duration = value
+        elif name == 'Reopen ticket after bot remediation':
+            reopen_ticket = value
+        elif name == 'Close ticket after bot remediation':
+            close_ticket = value
 
     # Read the project id out of the project's resource ID
     pattern = '.*projects/(.*)$'
@@ -59,6 +64,20 @@ def run(ctx):
     )
 
     logging.info("Successfully removed {} as an editor from {}".format(user_name, project_id))
+
+    # If we were asked to close the ticket then do that now
+    if close_ticket == 'true':
+        query = '''
+            mutation closeTicket($srn: String) {
+              CloseTickets(input: {srns: [$srn]}) {
+                successCount
+                failureCount
+                __typename
+              }
+            }
+        '''
+        variables = { "srn": ticket_srn }
+        response = ctx.graphql_client().query(query, variables)
 
 
 def modify_policy_remove_member(policy, role, member):

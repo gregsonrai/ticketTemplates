@@ -8,16 +8,13 @@ from datetime import timedelta
 def run(ctx):
     # Get the ticket data from the context
     ticket = ctx.config.get('data').get('ticket')
-    logging.info('Data looks like: {}'.format(ticket))
 
-    # Get the list of custom fields from the ticket
     ticket_srn = ticket.get("srn")
     reopen_ticket = 'false'
     close_ticket = 'false'
     user_srn = None
     tag_key = None
     tag_value = None
-    duration = None
 
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):

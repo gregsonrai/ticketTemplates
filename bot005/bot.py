@@ -7,8 +7,9 @@ def run(ctx):
     # Get the ticket data from the context
     ticket = ctx.config.get('data').get('ticket')
 
-    # Get the list of custom fields from the ticket
-    customFields = ticket.get('customFields')
+    ticket_srn = ticket.get("srn")
+    reopen_ticket = 'false'
+    close_ticket = 'false'
     user_srn = None
     policy_arn = None
 
@@ -24,6 +25,10 @@ def run(ctx):
             user_srn = value
         elif name == 'Policy select':
             policy_arn = value
+        elif name == 'Reopen ticket after bot remediation':
+            reopen_ticket = value
+        elif name == 'Close ticket after bot remediation':
+            close_ticket = value
 
     # Read the account and username out of the user srn
     # Note:  Account here is used by the frameworks to know which collector
@@ -45,3 +50,16 @@ def run(ctx):
     logging.info('Detaching policy {} from user {}'.format(policy_arn, user_name))
     iam_client.detach_user_policy(UserName=user_name, PolicyArn=policy_arn)
 
+    # If we were asked to close the ticket then do that now
+    if close_ticket == 'true':
+        query = '''
+            mutation closeTicket($srn: String) {
+              CloseTickets(input: {srns: [$srn]}) {
+                successCount
+                failureCount
+                __typename
+              }
+            }
+        '''
+        variables = { "srn": ticket_srn }
+        response = ctx.graphql_client().query(query, variables)

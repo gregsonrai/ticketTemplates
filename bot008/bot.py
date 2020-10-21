@@ -11,6 +11,9 @@ def run(ctx):
     # Create Azure identity and access management client
     ticket = ctx.config.get('data').get('ticket')
 
+    ticket_srn = ticket.get("srn")
+    reopen_ticket = 'false'
+    close_ticket = 'false'
     customFields = ticket.get('customFields')
     user_srn = None
     group_srn = None
@@ -30,6 +33,10 @@ def run(ctx):
             user_srn = value
         elif name == 'Group select':
             group_srn = value
+        elif name == 'Reopen ticket after bot remediation':
+            reopen_ticket = value
+        elif name == 'Close ticket after bot remediation':
+            close_ticket = value
 
     # Parse out the user ID and account / tenant ID
     #
@@ -59,3 +66,17 @@ def run(ctx):
     logging.info('Removing user {} from group {}'.format(userId, groupId))
     graphrbac_client = ctx.get_client().get(GraphRbacManagementClient)
     graphrbac_client.groups.remove_member(group_object_id=groupId, member_object_id=userId)
+
+    # If we were asked to close the ticket then do that now
+    if close_ticket == 'true':
+        query = '''
+            mutation closeTicket($srn: String) {
+              CloseTickets(input: {srns: [$srn]}) {
+                successCount
+                failureCount
+                __typename
+              }
+            }
+        '''
+        variables = { "srn": ticket_srn }
+        response = ctx.graphql_client().query(query, variables)

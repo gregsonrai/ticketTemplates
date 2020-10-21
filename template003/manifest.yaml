@@ -3,7 +3,7 @@ title: "JIT: AWS Policy Selector"
 
 # The next fields are optional:
 description: "This templates allows you to specify an AWS user and a policy for that user"
-version: "0.0.1"
+version: "0.0.2"
 authorName: "Sonrai Security"
 authorEmail: "info@sonraisecurity.com"
 
@@ -27,6 +27,10 @@ fields:
       valueField: "resourceId"
       labelFields: ["name", "resourceId"]
 
-  - name: "Duration hours"
-    required: false
-    type: "text"
+  - name: "Reopen ticket after bot remediation"
+    required: true
+    type: "checkbox"
+
+  - name: "Close ticket after bot remediation"
+    required: true
+    type: "checkbox"

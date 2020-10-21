@@ -7,7 +7,6 @@ def run(ctx):
     # Create AWS identity and access management client
     ticket = ctx.config.get('data').get('ticket')
 
-    customFields = ticket.get('customFields')
     ticket_srn = ticket.get("srn")
     reopen_ticket = 'false'
     close_ticket = 'false'
@@ -57,4 +56,3 @@ def run(ctx):
         '''
         variables = { "srn": ticket_srn }
         response = ctx.graphql_client().query(query, variables)
-

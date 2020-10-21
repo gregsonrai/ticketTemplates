@@ -10,10 +10,11 @@ def run(ctx):
     # Get the ticket data from the context
     ticket = ctx.config.get('data').get('ticket')
 
-    # Get the list of custom fields from the ticket
+    ticket_srn = ticket.get("srn")
+    reopen_ticket = 'false'
+    close_ticket = 'false'
     user_arn = None
     role_srn = None
-    duration = None
 
     # Loop through each of the custom fields and set the values that we need
     for customField in ticket.get('customFields'):
@@ -27,8 +28,10 @@ def run(ctx):
             user_arn = value
         elif name == 'Role select':
             role_srn = value
-        elif name == 'Duration hours':
-            duration = value
+        elif name == 'Reopen ticket after bot remediation':
+            reopen_ticket = value
+        elif name == 'Close ticket after bot remediation':
+            close_ticket = value
 
     # Read the account and username out of the user srn
     # Note:  Account here is used by the frameworks to know which collector
@@ -64,3 +67,17 @@ def run(ctx):
 
     iam_client.update_assume_role_policy(RoleName=role_name, PolicyDocument=json.dumps(policy_document))
     logging.info("Successfully updated {} AssumeRolePolicyDocument".format(role_name))
+
+    # If we were asked to close the ticket then do that now
+    if close_ticket == 'true':
+        query = '''
+            mutation closeTicket($srn: String) {
+              CloseTickets(input: {srns: [$srn]}) {
+                successCount
+                failureCount
+                __typename
+              }
+            }
+        '''
+        variables = { "srn": ticket_srn }
+        response = ctx.graphql_client().query(query, variables)
