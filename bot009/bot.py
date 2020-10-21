@@ -9,6 +9,7 @@ def run(ctx):
     ticket = ctx.config.get('data').get('ticket')
 
     # Get the list of custom fields from the ticket
+    ticket_srn = ticket.get("srn")
     reopen_ticket = 'false'
     close_ticket = 'false'
     user_name = None
