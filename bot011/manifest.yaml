@@ -1,0 +1,7 @@
+version: 2020-12-11
+type: Remediation
+title: Hello World Bot with Snooze
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
