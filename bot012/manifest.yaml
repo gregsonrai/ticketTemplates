@@ -1,6 +1,7 @@
 version: 2020-12-21
 type: Remediation
 title: Enable AWS S3 Versioning
+description: This AWS remediation bot will enable versioning on an S3 bucket.
 cloud: AWS
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security
