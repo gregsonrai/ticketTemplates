@@ -1,0 +1,7 @@
+version: 2020-12-21
+type: Remediation
+title: Enable AWS S3 Versioning
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
