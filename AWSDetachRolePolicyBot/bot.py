@@ -22,7 +22,7 @@ def run(ctx):
         value = customField['value']
 
         if name == 'Role select':
-            user_srn = value
+            role_srn = value
         elif name == 'Policy select':
             policy_arn = value
         elif name == 'Reopen ticket after bot remediation':
