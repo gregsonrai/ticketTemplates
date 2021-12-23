@@ -1,0 +1,37 @@
+# title of ticket template is required
+title: "JIT: TEST AWS Role Attach Policy Selector"
+
+# The next fields are optional:
+description: "This templates allows you to specify an AWS role and attach a policy for that user"
+version: "0.0.2"
+authorName: "Sonrai Security"
+authorEmail: "info@sonraisecurity.com"
+
+# one or more fields must be specified
+fields:
+  - name: "Role select"
+    required: true 
+    type: "select"
+    select:
+      search: "{ Roles( where: { and: [ { and: [ { active: { op: EQ, value: true } } { type: { op: EQ, value: Role } } ] } ] }) { items { srn name } } }"
+      path: ["data", "Roles", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn"]
+
+  - name: "Policy select"
+    required: true
+    type: "select"
+    select:
+      search: "{ Policies (where: {and: [{and: [{active: {op: EQ, value: true}}, {type: {op: EQ, value: ManagedPolicy}}, ]}, {}, {}]}) { items { resourceId name } } }"
+      path: ["data", "Policies", "items"]
+      valueField: "resourceId"
+      labelFields: ["name", "resourceId"]
+
+  - name: "Reopen ticket after bot remediation"
+    required: true
+    type: "checkbox"
+
+  - name: "Close ticket after bot remediation"
+    required: true
+    type: "checkbox"
+

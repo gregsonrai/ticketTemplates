@@ -1,0 +1,7 @@
+version: 2021-12-23
+type: Remediation
+title: AWS Detach Role Policy
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
