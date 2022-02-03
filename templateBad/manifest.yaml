@@ -1,0 +1,38 @@
+# title of ticket template is required
+title:
+
+# The next fields are optional:
+description: "This templates allows you to specify a tag to be applied to a user.
+If the \"Reopen ticket after bot remediation\" is checked, then the ticket will be reopened after the first bot finishes.
+If the \"Close ticket after bot remediation\" is checked, then the ticket will be closed after the second bot has completed.  
+Use these options with custom escalation schemes in order to create JIT provisioning profiles"
+version: "0.0.7"
+authorName: "Sonrai Security"
+authorEmail: "info@sonraisecurity.com"
+
+# one or more fields must be specified
+fields:
+  - name: "User select"
+    required: true
+    type: "select"
+    select:
+      search: "{ Users { items (limit: 5000) { srn name resourceId } } }"
+      path: ["data", "Users", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn", "resourceId"]
+
+  - name: "TagKey"
+    required: true
+    type: "text"
+
+  - name: "TagValue"
+    required: true
+    type: "text"
+
+  - name: "Reopen ticket after bot remediation"
+    required: true
+    type: "checkbox"
+
+  - name: "Close ticket after bot remediation"
+    required: true
+    type: "checkbox"
