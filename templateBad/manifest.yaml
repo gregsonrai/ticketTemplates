@@ -11,4 +11,28 @@ authorName: "Sonrai Security"
 authorEmail: "info@sonraisecurity.com"
 
 # one or more fields must be specified
+fields:
+  - name: "User select"
+    required: true
+    type: "select"
+    select:
+      search: "{ Users#### { items (limit: 5000) { srn name resourceId } } }"
+      path: ["data", "Users", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn", "resourceId"]
 
+  - name: "TagKey"
+    required: true
+    type: "text"
+
+  - name: "TagValue"
+    required: true
+    type: "text"
+
+  - name: "Reopen ticket after bot remediation"
+    required: true
+    type: "checkbox"
+
+  - name: "Close ticket after bot remediation"
+    required: true
+    type: "checkbox"
