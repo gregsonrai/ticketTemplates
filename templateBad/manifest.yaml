@@ -21,11 +21,11 @@ fields:
       valueField: "srn"
       labelFields: ["name", "srn", "resourceId"]
 
-  - name: "TagKey"
+  - name:
     required: true
     type: "text"
 
-  - name: "TagKey"
+  - name: "TagValue"
     required: true
     type: "text"
 
