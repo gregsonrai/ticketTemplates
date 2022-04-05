@@ -44,7 +44,7 @@ def run(ctx):
 
     if a is None:
         logging.error('Could not parse User SRN {}'.format(user_srn))
-        sys.exit()
+        raise Exception('Could not parse User SRN {}'.format(user_srn))
 
     tenantId = a.group(1)
     userId = a.group(2)
@@ -55,15 +55,15 @@ def run(ctx):
     a = re.search(pattern, group_srn)
 
     if a is None:
-        logging.error('Could not parse Group SRN {}'.format(user_srn))
-        sys.exit()
+        logging.error('Could not parse Group SRN {}'.format(group_srn))
+        raise Exception('Could not parse Group SRN {}'.format(group_srn))
 
     groupId = a.group(1)
 
     # Get the client and call the API to add a member
     #
     logging.info('Adding user {} to group {}'.format(userId, groupId))
-    graphrbac_client = ctx.get_client().get(GraphRbacManagementClient)
+    graphrbac_client = ctx.get_client(audience="https://graph.windows.net/").get(GraphRbacManagementClient)
     graphrbac_client.groups.add_member(group_object_id=groupId, url='https://graph.windows.net/' + tenantId + '/directoryObjects/' + userId)
 
 
