@@ -63,7 +63,7 @@ def run(ctx):
     # Get the client and call the API to add a member
     #
     logging.info('Adding user {} to group {}'.format(userId, groupId))
-    graphrbac_client = ctx.get_client(audience="https://graph.windows.net/").get(GraphRbacManagementClient)
+    graphrbac_client = ctx.get_client(audience="https://graph.windows.net/.default").get(GraphRbacManagementClient)
     graphrbac_client.groups.add_member(group_object_id=groupId, url='https://graph.windows.net/' + tenantId + '/directoryObjects/' + userId)
 
 

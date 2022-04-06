@@ -64,7 +64,7 @@ def run(ctx):
     # Get the client and call the API to add a member
     #
     logging.info('Removing user {} from group {}'.format(userId, groupId))
-    graphrbac_client = ctx.get_client(audience="https://graph.windows.net/").get(GraphRbacManagementClient)
+    graphrbac_client = ctx.get_client(audience="https://graph.windows.net/.default").get(GraphRbacManagementClient)
     graphrbac_client.groups.remove_member(group_object_id=groupId, member_object_id=userId)
 
     # If we were asked to close the ticket then do that now
