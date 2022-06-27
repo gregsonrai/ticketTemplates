@@ -1,7 +1,7 @@
 version: 2022-06-27
 type: Remediation
 title: Add Sensitive Data Classification Tag
-cloud: ANY
+cloud: AWS
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security
 authorEmail: info@sonraisecurity.com
