@@ -27,5 +27,5 @@ def run(ctx):
           }
         }
     '''
-    variables = { "srn": $object_srn, "key": $tag_key, "value": $tag_value }
+    variables = { "srn": object_srn, "key": tag_key, "value": tag_value }
     response = ctx.graphql_client().query(query, variables)
