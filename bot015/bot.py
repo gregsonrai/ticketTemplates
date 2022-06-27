@@ -13,9 +13,7 @@ def run(ctx):
     # SRN of the resource in the ticket
     object_srn = ctx.resource_srn
 
-    org_name = ticket.get("orgName")
-
-    remove_tag_value = {"hasTag":{"remove":["srn:" + org_name + "::Tag/SonraiDataClassification:Sensitive"]}}
+    remove_tag_value = {"hasTag":{"remove":["srn:sonrai::Tag/SonraiDataClassification:Sensitive"]}}
     # Remove "Sensitive" tag from the resource if it exists
     query = '''
         mutation removeTag($resourceSrn: ID!, $value: ResourceUpdater!) {
