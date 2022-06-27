@@ -1,0 +1,10 @@
+version: 2022-06-27
+type: Remediation
+title: Add Highly Sensitive Data Classification Tag
+cloud: AWS
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
+description: |-
+  Tag a resource with the SonraiDataClassification:Senstive tag.
+  If the resource already has a SonraiDataClassification:Sensitive tag, it will be removed.

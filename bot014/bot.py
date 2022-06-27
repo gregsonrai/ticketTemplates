@@ -27,5 +27,7 @@ def run(ctx):
           }
         }
     '''
+
+    print("Adding {}:{} tag to {}", tag_key, tag_value, object_srn)
     variables = { "srn": object_srn, "key": tag_key, "value": tag_value }
     response = ctx.graphql_client().query(query, variables)
