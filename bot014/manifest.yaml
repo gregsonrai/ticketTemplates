@@ -1,0 +1,9 @@
+version: 2022-06-27
+type: Remediation
+title: Add Sensitive Data Classification Tag
+cloud: any
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
+description: |-
+  Tag a resource with the SonraiDataClassification:Senstive tag.
