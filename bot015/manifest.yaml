@@ -1,6 +1,6 @@
 version: 2022-06-27
 type: Remediation
-title: Add Highly Sensitive Data Classification Tag
+title: Tag Resource as Highly Sensitive
 cloud: AWS
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security
