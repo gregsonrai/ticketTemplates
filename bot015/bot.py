@@ -26,9 +26,14 @@ def run(ctx):
 
     print("Attempting to remove SonraiDataClassification:Sensitive tag from " + object_srn)
     variables = { "resourceSrn": object_srn, "value": remove_tag_value }
-    response = ctx.graphql_client().query(query, variables)
 
-    print("I thought it would interest YOU to know that response looks like: {}".format(response))
+    try: 
+        response = ctx.graphql_client().query(query, variables)
+        print("Successfully removed tag")
+   
+    except Exception as e:
+        print("Could not remove tag.  It may never have existed!  Bravely continuing on")
+
     tag_key = "SonraiDataClassification"
     tag_value = "Highly Sensitive"
 
