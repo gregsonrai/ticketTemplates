@@ -1,0 +1,9 @@
+version: 2022-12-15
+type: Remediation
+title: Tag Resource as Highly Sensitive
+cloud: ANY
+operation: EXECUTE_PYTHON_SCRIPT
+authorName: Sonrai Security
+authorEmail: info@sonraisecurity.com
+description: |-
+  Simple job to check the exection of an any bot
