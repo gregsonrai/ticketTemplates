@@ -1,6 +1,6 @@
 version: 2022-12-15
 type: Remediation
-title: Tag Resource as Highly Sensitive
+title: Quick Test Any Bot
 cloud: ANY
 operation: EXECUTE_PYTHON_SCRIPT
 authorName: Sonrai Security
