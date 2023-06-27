@@ -8,8 +8,7 @@ def run(ctx):
     ticket = ctx.config.get('data').get('ticket')
 
     ticket_srn = ticket.get("srn")
-    reopen_ticket = 'false'
-    close_ticket = 'false'
+    title = ticket.get("title")
     user_srn = None
     policy_arn = None
 
@@ -25,10 +24,6 @@ def run(ctx):
             user_srn = value
         elif name == 'Policy select':
             policy_arn = value
-        elif name == 'Reopen ticket after bot remediation':
-            reopen_ticket = value
-        elif name == 'Close ticket after bot remediation':
-            close_ticket = value
 
     # Read the account and username out of the user srn
     # Note:  Account here is used by the frameworks to know which collector
@@ -50,17 +45,29 @@ def run(ctx):
     logging.info('Attaching policy {} to user {}'.format(policy_arn, user_name))
     iam_client.attach_user_policy(UserName=user_name, PolicyArn=policy_arn)
 
-
-    # If we were asked to reopen the ticket (to allow escalation schemes to continue functioning), then do that now
-    if reopen_ticket == 'true':
-        query = '''
-            mutation reopenTicket($srn: String) {
-                ReopenTickets(input: {srns: [$srn]}) {   
-                  successCount
-                  failureCount
-                  __typename
-                }
+    # Change ticket title to reflect that it has been approved
+    title = title + " - Approved"
+    query = '''
+        mutation retitleTicket($srn: String, $title: String) {
+            UpdateTicket(input: {title: $title, ticketSrn:$srn}) {
+              title
+              ticketKey
+              srn
             }
-        '''
-        variables = { "srn": ticket_srn }
-        response = ctx.graphql_client().query(query, variables)
+        }
+    '''
+    variables = { "srn": ticket_srn, "title": title}
+    response = ctx.graphql_client().query(query, variables)
+
+    # Reopen the ticket (to allow escalation schemes to continue functioning)
+    query = '''
+        mutation reopenTicket($srn: String) {
+            ReopenTickets(input: {srns: [$srn]}) {   
+              successCount
+              failureCount
+              __typename
+            }
+        }
+    '''
+    variables = { "srn": ticket_srn }
+    response = ctx.graphql_client().query(query, variables)

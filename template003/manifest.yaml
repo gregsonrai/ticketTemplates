@@ -27,10 +27,3 @@ fields:
       valueField: "resourceId"
       labelFields: ["name", "resourceId"]
 
-  - name: "Reopen ticket after bot remediation"
-    required: true
-    type: "checkbox"
-
-  - name: "Close ticket after bot remediation"
-    required: true
-    type: "checkbox"
