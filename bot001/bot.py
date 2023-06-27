@@ -10,6 +10,7 @@ def run(ctx):
     ticket = ctx.config.get('data').get('ticket')
 
     ticket_srn = ticket.get("srn")
+    title = ticket.get("title")
     user_srn = None
     tag_key = None
     tag_value = None
@@ -48,6 +49,20 @@ def run(ctx):
     # Call the AWS tag_user API to tag the user
     logging.info('Tagging user {} with {} : {}'.format(user_name, tag_key, tag_value))
     iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
+
+    # Change ticket title to reflect that it has been approved
+    title = title + " - Approved"
+    query = '''
+        mutation retitleTicket($srn: String, $title: String) {
+            UpdateTicket(input: {title: $title, ticketSrn:$srn}) {
+              title
+              ticketKey
+              srn
+            }
+        }
+    '''
+    variables = { "srn": ticket_srn, "title": title}
+    response = ctx.graphql_client().query(query, variables)
 
     # Reopen ticket so we can wait for the second escalation
     query = '''
