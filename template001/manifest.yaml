@@ -2,11 +2,8 @@
 title: "JIT: AWS User Tagging Selector"
 
 # The next fields are optional:
-description: "This templates allows you to specify a tag to be applied to a user.
-If the \"Reopen ticket after bot remediation\" is checked, then the ticket will be reopened after the first bot finishes.
-If the \"Close ticket after bot remediation\" is checked, then the ticket will be closed after the second bot has completed.  
-Use these options with custom escalation schemes in order to create JIT provisioning profiles"
-version: "0.0.7"
+description: "This templates allows you to specify a tag to be applied to a user."
+version: "0.0.8"
 authorName: "Sonrai Security"
 authorEmail: "info@sonraisecurity.com"
 
@@ -28,11 +25,3 @@ fields:
   - name: "TagValue"
     required: true
     type: "text"
-
-  - name: "Reopen ticket after bot remediation"
-    required: true
-    type: "checkbox"
-
-  - name: "Close ticket after bot remediation"
-    required: true
-    type: "checkbox"

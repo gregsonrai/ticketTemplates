@@ -10,8 +10,6 @@ def run(ctx):
     ticket = ctx.config.get('data').get('ticket')
 
     ticket_srn = ticket.get("srn")
-    reopen_ticket = 'false'
-    close_ticket = 'false'
     user_srn = None
     tag_key = None
     tag_value = None
@@ -30,10 +28,6 @@ def run(ctx):
             tag_key = value
         elif name == 'TagValue':
             tag_value = value
-        elif name == 'Reopen ticket after bot remediation':
-            reopen_ticket = value
-        elif name == 'Close ticket after bot remediation':
-            close_ticket = value
 
     # Read the account and username out of the user srn
     # Note:  Account here is used by the frameworks to know which collector
@@ -55,16 +49,15 @@ def run(ctx):
     logging.info('Tagging user {} with {} : {}'.format(user_name, tag_key, tag_value))
     iam_client.tag_user(UserName=user_name, Tags=[ { 'Key': tag_key, 'Value': tag_value } ])
 
-    # If we were asked to reopen the ticket (to allow escalation schemes to continue functioning), then do that now
-    if reopen_ticket == 'true':
-        query = '''
-            mutation reopenTicket($srn: String) {
-                ReopenTickets(input: {srns: [$srn]}) {   
-                  successCount
-                  failureCount
-                  __typename
-                }
+    # Reopen ticket so we can wait for the second escalation
+    query = '''
+        mutation reopenTicket($srn: String) {
+            ReopenTickets(input: {srns: [$srn]}) {
+              successCount
+              failureCount
+              __typename
             }
-        '''
-        variables = { "srn": ticket_srn }
-        response = ctx.graphql_client().query(query, variables)
+        }
+    '''
+    variables = { "srn": ticket_srn }
+    response = ctx.graphql_client().query(query, variables)
