@@ -22,7 +22,7 @@ fields:
     required: true
     type: "select"
     select:
-      search: "{ Policies (where: {and: [{and: [{active: {op: EQ, value: true}},{name: {op: STARTS_WITH, value: "Sonrai-Template-"}}, {type: {op: EQ, value: ManagedPolicy}}]}, {}, {}]}) { items (limit: 5000) { resourceId name } } }"
+      search: "{ Policies (where: {and: [{and: [{active: {op: EQ, value: true}},{name: {op: STARTS_WITH, value: \"Sonrai-Template-\"}}, {type: {op: EQ, value: ManagedPolicy}}]}, {}, {}]}) { items (limit: 5000) { resourceId name } } }"
       path: ["data", "Policies", "items"]
       valueField: "resourceId"
       labelFields: ["name", "resourceId"]
