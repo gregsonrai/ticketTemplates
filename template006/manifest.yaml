@@ -1,0 +1,28 @@
+# title of ticket template is required
+title: "JIT: Sonrai Permission Template Selector"
+
+# The next fields are optional:
+description: "This templates allows you to specify an AWS user and apply a templated policy for that user.  New policies can be created in all accounts and must start with Sonrai-Template-"
+version: "0.0.2"
+authorName: "Sonrai Security"
+authorEmail: "info@sonraisecurity.com"
+
+# one or more fields must be specified
+fields:
+  - name: "IAM User Select"
+    required: true 
+    type: "select"
+    select:
+      search: "{ Users (where: {and: [{and: [{active: {op: EQ, value: true}}, {type: {op: EQ, value: User}}]}, {}, {}]}) { items (limit: 5000) { srn name } } }"
+      path: ["data", "Users", "items"]
+      valueField: "srn"
+      labelFields: ["name", "srn"]
+
+  - name: "Template of Permissions"
+    required: true
+    type: "select"
+    select:
+      search: "{ Policies (where: {and: [{and: [{active: {op: EQ, value: true}},{name: {op: STARTS_WITH, value: "Sonrai-Template-"}}, {type: {op: EQ, value: ManagedPolicy}}]}, {}, {}]}) { items (limit: 5000) { resourceId name } } }"
+      path: ["data", "Policies", "items"]
+      valueField: "resourceId"
+      labelFields: ["name", "resourceId"]
